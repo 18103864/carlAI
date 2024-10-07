@@ -20,9 +20,9 @@ export const generateImage = async (req, res, next) => {
       prompt,
       n: 1,
       size: "1024x1024",
-      response_format: "b64_json",
+      response_format: "url",
     });
-    const generatedImage = response.data.data[0].b64_json;
+    const generatedImage = response.data.data[0].url;
     return res.status(200).json({ photo: generatedImage });
   } catch (error) {
     next(

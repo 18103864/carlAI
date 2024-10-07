@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Button from './buttons';
 import TextInput from './TextInput';
 import { AutoAwesome, CreateRounded } from '@mui/icons-material';
+import { CreatePost, GenerateAIImage } from '../api';
+import { useNavigate } from "react-router-dom";
 
 const Form = styled.div`
   flex: 1;
@@ -56,18 +58,36 @@ const GenerateFormImage = ({
     setGenerateImageLoading,
 }) => {
 
-    const generateImageFunc = () => {
+    const navigate = useNavigate();
+    const [error, setError] = useState("");
+    const generateImageFunc = async () => {
         setGenerateImageLoading(true);
+        await GenerateAIImage({prompt: post.prompt}).then((res) => {
+          setPost({...post, photo: res?.data?.photo})
+          setGenerateImageLoading(false);
+        })
+        .catch((error) => {
+          setError(error?.response?.data?.message || "An error occurred while generating the image.");
+          setGenerateImageLoading(false);
+        });
     };
 
-    const createPostFunc = () => {
+    const createPostFunc = async () => {
         setCreatePostLoading(true);
+        await CreatePost(post).then((res) => {
+          setCreatePostLoading(false);
+          navigate("/");
+        })
+        .catch((error) =>{
+          setError(error?.response?.data?.message || "An unexpected error occurred while creating the post.");
+          setCreatePostLoading(false);
+        })
     };   
 
   return (
     <Form>
         <Top>
-            <Title>Generate Image with Prompt</Title>
+            <Title>Generate Image with CARL-AI</Title>
             <Desc>Write Your Prompt</Desc>
         </Top>
         <Body>
@@ -87,6 +107,7 @@ const GenerateFormImage = ({
                 value={post.prompt}
                 handelChange={(e)=>setPost({...post, prompt: e.target.value})}
             />
+            {error && <div style={{ color: "red" }}>{error}</div>}
             ** You can post the AI generated Image to the Community
         </Body>
         <Actions>
