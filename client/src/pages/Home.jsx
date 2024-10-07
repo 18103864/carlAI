@@ -29,6 +29,7 @@ const Headline = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: 1rem;
 
   @media (max-width: 600px) {
     font-size: 22px;
@@ -38,7 +39,7 @@ const Headline = styled.div`
 const Span = styled.div`
   font-size: 30px;
   font-weight: 800;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.primary};
 
   @media (max-width: 600px) {
     font-size: 20px;

@@ -1,5 +1,5 @@
 import styled, { ThemeProvider } from "styled-components";
-import { darkTheme } from "./utils/Theme";
+import { lightTheme } from "./utils/Theme";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import Navbar from "./components/Navbar";
@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={lightTheme}>
       <Container>
         <Wrapper>
           <BrowserRouter>
